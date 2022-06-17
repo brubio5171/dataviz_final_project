@@ -1,9 +1,13 @@
 ---
-title: "Brandon Rubio Analysis"
-author: "Brandon Rubio"
-date: "6/2/2022"
-output: html_document
+title: "Mini-Project 01"
+output: 
+  html_document:
+    keep_md: true
+    toc: true
+    toc_float: true
 ---
+
+# Data Visualization Project 01
 
 # Before We Begin
 #### Let's load the necessary packages before starting the data analysis
