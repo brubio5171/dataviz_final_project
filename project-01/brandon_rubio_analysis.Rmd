@@ -1,0 +1,79 @@
+---
+title: "Brandon Rubio Analysis"
+author: "Brandon Rubio"
+date: "6/2/2022"
+output: html_document
+---
+
+# Before We Begin
+#### Let's load the necessary packages before starting the data analysis
+
+```{r}
+library(tidyverse)
+library(ggplot2)
+library(dplyr)
+```
+
+
+# First is to load the dataset
+#### The dataset for this project is 'fuel.csv', which contains fuel economy data produced during vehicle testing from the 1984-2017. 
+
+```{r}
+fuel_raw <- read_csv("https://raw.githubusercontent.com/reisanar/datasets/master/fuel.csv")
+fuel_raw
+```
+
+In the first data visualization I would like to compare City MPG with the vehicle make
+
+```{r}
+fuel_by_city <- fuel_raw %>%
+  count(year, class, city_mpg_ft1)
+```
+
+
+```{r}
+fuel_by_city
+```
+```{r}
+ggplot(data = fuel_by_city, mapping = aes(x = year, y = city_mpg_ft1)) + 
+  geom_col(aes(fill = year)) +
+  coord_flip() + 
+  scale_x_reverse() +
+  theme_classic() +
+  theme(legend.position = "none") +
+  labs(title = "Average City MPG (1984-2017)",
+       x = "", y = "City MPG")
+```
+
+```{r}
+fuel_by_highway <- fuel_raw %>%
+  count(year, class, highway_mpg_ft1)
+
+fuel_by_highway
+```
+
+```{r}
+ggplot(data = fuel_by_highway, mapping = aes(x = year, y = highway_mpg_ft1)) + 
+  geom_smooth(color = "#e49c36", se = FALSE) +
+  theme_classic() +
+    labs(title = "Average HighWay MPG (1984-2017)",
+       x = "", y = "Highway MPG")
+```
+
+
+```{r}
+ggplot(data = fuel_raw, mapping = aes(x = engine_cylinders, y = tailpipe_co2_in_grams_mile_ft1, color = fuel_type)) +
+  geom_point() +
+  geom_smooth(method = 'lm') +
+  scale_colour_discrete("Fuel Type") +
+  theme_light() +
+  labs(title = "CO2 Emissions based on Fuel Type and Number of Engine Cylinders",
+       x = "Number of Cylinders", y = "")
+```
+
+# Report
+
+The data set I used in this project, `file.csv`, contains fuel economy data produced during vehicle testing at the Environmental Protection Agency’s (EPA) National Vehicle and Fuel Emissions Laboratory from 1984 to 2017. From this, I already know that I want to explore what trends could be in the data, and determine if the overall "environmentally friendliness" of automobiles in the U.S. has improved or worsened within this time frame. First, let's look at efficiency, the first two data visualizations show how much the average MPG in both the city and the highway have changed over time. We can see that the fuel efficiency drops starting with 1986, and continues to do so until 2005, when the MPG has a drastic and steady increase until 2017. This could very likely be for technological reasons. On the basis of overall vehicle efficiency, it can be determined from the data that vehicles have become more fuel efficient over time. The last graph was meant to see which vehicles emit the least amount of CO~2~ based on the type of fuel they use and the number of cylinders in their engine. As expected, vehicles emit less CO~2~ with fewer cylinders. What was surprising, however, was that vehicles that utilized Premium Gas generally had less CO~2~ emissions than vehicles that used Regular gas.
+
+There are many more visualizations that can be made from this data set, such as the CO~2~ emissions throughout the years produced by different car models, which can be used to determine which models have had the worst effect on CO~2~ levels.
+
