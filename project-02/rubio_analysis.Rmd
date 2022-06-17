@@ -1,0 +1,190 @@
+---
+title: "Brandon Rubio - Mini Project 2"
+author: "Brandon Rubio"
+date: '2022-06-15'
+output: html_document
+---
+
+---
+
+```{r, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(ggplot2)
+library(dplyr)
+library(ggrepel)
+# For Interactive Model, you only really need to use 'plotly' the rest are mostly for spicing up your models
+library(plotly)
+library(htmlwidgets)
+library(dygraphs)
+library(leaflet)
+library(highcharter) 
+library(r2d3)
+library(rbokeh)
+library(tmap)
+# For Spatial Visualization
+library(sf)
+library(maps)
+# For Model Visualization
+library(broom)
+library(coefplot)
+```
+
+---
+
+# Creating an Interactive Plot
+
+```{r, message=FALSE, warning=FALSE}
+summer_hits = read_csv("https://raw.githubusercontent.com/reisanar/datasets/master/all_billboard_summer_hits.csv")
+summer_hits
+```
+
+<p style='text-align: justify;font-family:verdana'>For my first visualization I thought about a criticism I've heard about modern music, in that it is over compressed and [getting louder and louder](https://www.bbc.com/news/entertainment-arts-35250557). With a set of data that provides information about the loudness of summer hits from 1958 to 2015, this was an opportunity to see if there truly is a trend in the data that suggests music is getting louder. A scatter plot was always my intended graph to use for this, however, <b>_I would have liked if the data included the genre of each track_</b>, so I would be able to color each point based on the different genres to also see if an increase in loudness also correlates with a shift in the most industry-dominant genre. Aside from this, there was no cleaning and/or filtering necessary for the data visualization that I wanted.</p>
+
+```{r, message=FALSE, warning=FALSE}
+# Create a scatter plot with the color crimson
+loud_graph <- ggplot(summer_hits, aes(year, loudness)) +
+  geom_point(color = "#990000") +
+  # I will use Local regression because looking at the scatter plot, there seems to be a trend but the correlation is weak-positice
+  geom_smooth(method = "loess", formula = "y ~ x", se = FALSE, color = "black") +
+  scale_x_log10() +
+  theme_classic() +
+  labs(title = "Summer Hit Loudness Over Time",
+       x = "Year", y = "Loudness") +
+  theme(legend.position = "bottom")
+
+# Applying "plotly" interactivity to the regression plot
+loudness <- ggplotly(loud_graph, tooltip = "text")
+loudness
+```
+
+<p style='text-align: justify;font-family:verdana'>Looking at the data, we can see that, ignoring outliers, there is a trend that suggests that modern music is getting louder, but the trend is fairly weak, meaning that the increase in music volume isn't as drastic as it is often made out to be. This reason is why I opted to apply a local regression line, as I do not believe the data has a strong enough correlation to be accurately represented with a linear regression line. The limitation of this conclusion however, is that it only considers summer hits based on Spotify's data, so <b>_there is not enough data to draw any conclusions about any specific genre_</b>, as well as about the year as a whole. A histogram could also be used for this, but I believe the conclusions would be the same.</p>
+
+```{r, message=FALSE, warning=FALSE}
+# Let's go ahead and save the interactive plot into a contained .html file
+saveWidget(loudness, "interactive_plot.html")
+```
+
+---
+
+# Creating a Spatial Visualization
+
+<p style='text-align: justify;font-family:verdana'>Since the data I had used for the interactive plot would have made it extremely difficult for me to create a spatial visualization, I went ahead and downloaded another CSV that contains data on the 2017 Boston Marathon. With this, I wanted to look at the representation of different countries in the race, and which countries were represented more and which were represented less. There were no other graphs I had intended to use aside from displaying the proportions of runners from each participating country on a world map.</p>
+
+```{r, message=FALSE, warning=FALSE}
+# To create a spatial visualization, I'll be using a new .csv file
+marathon = read_csv("https://raw.githubusercontent.com/reisanar/datasets/master/marathon_results_2017.csv")
+marathon
+```
+
+
+```{r}
+getwd()
+```
+
+
+```{r, message=FALSE, warning=FALSE}
+# I'll also be using the following shapefile
+world_shapes <- read_sf("data/ne_110m_admin_0_countries/ne_110m_admin_0_countries.shp")
+```
+
+<p style='font-family:verdana;'>First, I want to make sure that I can join the countries in both the CSV file and the shape file, I'll do this by changing the column name for the Country column in the CSV file to match the shape file.</p>
+
+```{r, message=FALSE, warning=FALSE}
+colnames(marathon)[7] <- "ISO_A3"
+marathon
+```
+<p style='font-family:verdana;'>With that out of the way, we can do some filtering.</p>
+
+```{r, message=FALSE, warning=FALSE}
+countries <- marathon %>%
+# Group the data by the available countries
+group_by(ISO_A3) %>%
+# Allocate a count of the number of times each country appears in the data set
+summarize(Total = n(), .groups = 'drop')
+```
+
+```{r, message=FALSE, warning=FALSE}
+runner_map <- world_shapes %>%
+  # Combine the 'countries data frame and the world map by their shared country names
+  left_join(countries, by = "ISO_A3") %>%
+  # Remove Antarctica
+  filter(ISO_A3 != "ATA")
+```
+
+<p style='font-family:verdana;'>Now we can apply our data onto our map.</p>
+
+```{r, message=FALSE, warning=FALSE}
+# Making a spatial visualization
+ggplot(data = runner_map) +
+  # Creates a scale based on the total times each country appears in the data set
+  geom_sf(aes(fill = Total), size = 0.5) +
+  labs(title = "Concentration of Runners by Country", fill = "Runners") +
+  annotate("text", x = 30, y = -40, label = "Grey signifies no participation from the country.") +
+  # I've tried different transformations, and 'log10' generates the best results on the legend scale
+  scale_fill_viridis_c(option = "plasma", trans = "log10") +
+  theme_void() +
+  theme(legend.position = "bottom",
+        legend.key.width= unit(1, "in"),
+        legend.key.height = unit(.3, "cm"),
+        plot.title = element_text(hjust = 0.5),
+        plot.background = element_rect(fill = "white", color = NA))
+```
+
+<p style='text-align: justify;font-family:verdana'>From the results generated, we can see that the majority of participants come from the U.S. and Canada, which makes sense geographically. However, the under representation from Africa is of note, and may suggest that a lack of significant participation from them may be for socio-economic causes. Overall though, there seems to a decent amount of representation from nations worldwide.</p>
+
+---
+
+# Visualization of a Model
+
+<p style='text-align: justify;font-family:verdana'>Since I have already used two different CSVs, I decided to go ahead and download a third one. This one contains data on births in the U.S from 2000 to 2014. Since June is my birth month, <b>_I wanted to look at the birth trends in June_</b> within the time that this data was collected. Unfortunately, this data started being collected after 1999, the year I was born.</p>
+
+```{r, message=FALSE, warning=FALSE}
+df = read_csv("https://raw.githubusercontent.com/reisanar/datasets/master/us_births_00_14.csv")
+df
+```
+
+<p style='font-family:verdana;'>Now I want to filter out the data set so I can work only with data collected in June.</p>
+
+```{r, message=FALSE, warning=FALSE}
+# Filtering out all the data from June onto a separate data frame
+june <- filter(df, month == "6")
+```
+
+<p style='font-family:verdana;'>I can create a coefficient plot if I create a linear model for it.</p>
+
+```{r, message=FALSE, warning=FALSE}
+# Creating a linear model to see if there are any trends for births throughout the month of June within the year range
+ggplot(june, aes(x = date_of_month, y = births, color = day_of_week)) +
+  geom_point() +
+  geom_smooth(method = "lm",
+  formula = "y ~ x", color = "#1da2d8") +
+  labs(title = "Births in June", x = "Day of June", y = "Number of Births", color = "Day of the Week") +
+  theme_classic()
+```
+
+```{r, message=FALSE, warning=FALSE}
+# Creating a linear regression to determine if there is any correlation between the June and it's days or June and it's current year
+june_model <- lm(births ~ day_of_week + year, data = june)
+
+# Tidying up the regression data
+june_coefs <- tidy(june_model, conf.int = TRUE) %>% 
+  filter(term != "(Intercept)")
+june_coefs
+```
+
+```{r, message=FALSE, warning=FALSE}
+# Creating a coefficient plot from the regression data
+ggplot(june_coefs,
+       aes(x = estimate, 
+           y = fct_rev(term))) +
+  geom_pointrange(aes(xmin = conf.low, 
+                      xmax = conf.high)) +
+  geom_vline(xintercept = 0, 
+             color = "#92A8D1") + 
+  labs(title = "Coefficient Plot for Number of Births", x = "Estimate") +
+  scale_y_discrete(labels = c("Year", "Wednesday", "Tuesday", "Thursday", "Sunday", "Saturday", "Monday")) +
+  theme_classic()
+```
+
+<p style='text-align:justify;font-family:verdana'>Based on the results that were generated, we can see that the correlation between the number of births and the day being Saturday and Sunday is absurdly negative, and it can be concluded within the given data that births were least likely to happen on weekends. The other correlations have little to no statistical significance in comparison.</p>
+
