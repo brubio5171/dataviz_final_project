@@ -1,9 +1,13 @@
 ---
-title: "Brandon Rubio - Mini Project 2"
-author: "Brandon Rubio"
-date: '2022-06-15'
-output: html_document
+title: "Mini-Project 02"
+output: 
+  html_document:
+    keep_md: true
+    toc: true
+    toc_float: true
 ---
+
+# Data Visualization Project 02
 
 ---
 
