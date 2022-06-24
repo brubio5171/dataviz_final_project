@@ -22,12 +22,12 @@ _[Overall Highway MPG (1984-2017)]_
 
 ## Project 02
 
-In this project, I explored ... _[short description of your revised project goes here]_ Find the code and report in the `project_02/` folder.
+In this project, I explored three different data sets using three different data visualization methods. Find the code and report in the `project_02/` folder.
 
-**Sample data visualization:** 
+**2017 Boston Marathon Runner Data Mapped Onto a World Shape File** 
 
-_[include your favorite visualization from this project here]_
-<img src="https://github.com/reisanar/dataviz_final_project/blob/main/figures/fl_higher_ed.png" width="60%" height="60%">
+_[International Runner Concentraion for 2017 Boston Marathon]_
+<img src="https://github.com/brubio5171/dataviz_final_project/blob/master/project-02/rubio_project_02_files/figure-html/unnamed-chunk-11-1.png" width="60%" height="60%">
 
 (you can also place your figures in the `figures/` folder and use the `![](path_to_picture)` option to add the pictures here)
 
