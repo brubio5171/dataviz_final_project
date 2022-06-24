@@ -15,7 +15,7 @@ In the `project_01/` folder you can find a series of analyses that looks at the 
 **Overall Highway MPG (1984-2017)** 
 
 _[Overall Highway MPG (1984-2017)]_
-<img src="https://github.com/brubio5171/dataviz_final_project/blob/master/project-01/rubio_project_01_files/figure-html/unnamed-chunk-6-1.png" width="70%" height="70%">
+<img src="https://github.com/brubio5171/dataviz_final_project/blob/master/project-01/rubio_project_01_files/figure-html/unnamed-chunk-6-1.png" width="60%" height="60%">
 
 
 
@@ -29,19 +29,19 @@ In this project, I explored three different data sets using three different data
 _[International Runner Concentraion for 2017 Boston Marathon]_
 <img src="https://github.com/brubio5171/dataviz_final_project/blob/master/project-02/rubio_project_02_files/figure-html/unnamed-chunk-11-1.png" width="60%" height="60%">
 
-(you can also place your figures in the `figures/` folder and use the `![](path_to_picture)` option to add the pictures here)
+
 
 
 ## Project 03
 
-In this project, I explored ... _[short description of your revised project goes here]_
+In this project, I explored different data visualizations using data on weather in the Tampa area between 2016 and 2017.
 
-**Sample data visualization:** 
+**How Often Max Temperature was Recoded Each Month** 
 
-_[include your favorite visualization from this project here]_
-<img src="https://github.com/reisanar/figs/raw/master/jackie_jessie_marion.png" width="80%" height="80%">
+_[Distibution of Maximum Temperatures Monthly]_
+<img src="https://github.com/brubio5171/dataviz_final_project/blob/master/project-03/rubio_project_03_files/figure-html/unnamed-chunk-4-1.png" width="80%" height="80%">
 
 
 ### Moving Forward
 
-_add here a short reflection on what you learned and what you plan to continue exploring in terms of data visualization, data storytelling, reproducible research, and/or related topics_
+<p style='text-align: justify;'>What I learned throughout this course and during this project was how to use a set of data provided to me in order to tell a story with a visualization, and how to change the story and the visualization depending on what I want to say with the results. I also learned alot of new things about R as a programming language, and most especially how to make use of the different packages available for R users, especially the `ggplot2` package. Moving forward, I want to continue to strengthen and expand my understanding of both coding and data analysis, and to do so while working on different personal projects in order to build up both my skill and my resume.</p>
