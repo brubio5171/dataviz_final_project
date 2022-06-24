@@ -10,7 +10,7 @@ The following is a sample of products created during the _"Data Visualization an
 
 ## Project 01
 
-In the `project_01/` folder you can find... _[short description of your revised project goes here]_
+In the `project_01/` folder you can find a series of analyses that looks at the `fuel.csv` data set, which contains fuel economy data produced during vehicle testing from the 1984-2017.
 
 **Sample data visualization:** 
 
