@@ -14,7 +14,6 @@ In the `project_01/` folder you can find a series of analyses that looks at the 
 
 **Overall Highway MPG (1984-2017)** 
 
-_[Overall Highway MPG (1984-2017)]_
 <img src="https://github.com/brubio5171/dataviz_final_project/blob/master/project-01/rubio_project_01_files/figure-html/unnamed-chunk-6-1.png" width="60%" height="60%">
 
 
