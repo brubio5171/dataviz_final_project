@@ -12,10 +12,10 @@ The following is a sample of products created during the _"Data Visualization an
 
 In the `project_01/` folder you can find a series of analyses that looks at the `fuel.csv` data set, which contains fuel economy data produced during vehicle testing from the 1984-2017. 
 
-**Sample data visualization:** 
+**Overall Highway MPG (1984-2017)** 
 
-_[include your favorite visualization from this project here]_
-<img src="https://github.com/reisanar/figs/raw/master/echarts.png" width="70%" height="70%">
+_[Overall Highway MPG (1984-2017)]_
+<img src="https://github.com/brubio5171/dataviz_final_project/blob/master/project-01/rubio_project_01_files/figure-html/unnamed-chunk-6-1.png" width="70%" height="70%">
 
 
 
